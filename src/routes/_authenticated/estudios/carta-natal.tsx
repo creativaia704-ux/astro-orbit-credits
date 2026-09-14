@@ -10,6 +10,9 @@ import {
   isPersonValid,
   type PersonValues,
 } from "@/components/estudios/StudyFormFields";
+import { OfflineBanner } from "@/components/OfflineBanner";
+import { useOnlineStatus } from "@/hooks/useOnlineStatus";
+import { useStudyDraft } from "@/hooks/useStudyDraft";
 
 export const Route = createFileRoute("/_authenticated/estudios/carta-natal")({
   head: () => ({
@@ -30,13 +33,21 @@ function CartaNatalPage() {
   const navigate = useNavigate();
   const submit = useServerFn(createStudy);
   const { profile, balance, setBalance } = useProfileCredits(user.id);
+  const online = useOnlineStatus();
+  const { draft, hydrated, saveDraft, clearDraft } = useStudyDraft<PersonValues>("carta_natal");
 
   const [person, setPerson] = useState<PersonValues>(emptyPerson);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const today = useMemo(() => new Date().toISOString().slice(0, 10), []);
 
+  // El borrador guardado tiene prioridad sobre los datos del perfil.
   useEffect(() => {
+    if (!hydrated) return;
+    if (draft) {
+      setPerson(draft);
+      return;
+    }
     if (!profile) return;
     setPerson({
       name: profile.full_name ?? "",
@@ -44,9 +55,14 @@ function CartaNatalPage() {
       birth_time: profile.birth_time ?? "",
       birth_place: profile.birth_place ?? "",
     });
-  }, [profile]);
+  }, [profile, draft, hydrated]);
 
-  const canSubmit = isPersonValid(person, today) && (balance ?? 0) >= 5 && !busy;
+  function updatePerson(next: PersonValues) {
+    setPerson(next);
+    saveDraft(next);
+  }
+
+  const canSubmit = isPersonValid(person, today) && (balance ?? 0) >= 5 && !busy && online;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
