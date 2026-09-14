@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PaquetesRouteImport } from './routes/paquetes'
+import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as RegistroRouteImport } from './routes/registro'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as ComprasEstadoRouteImport } from './routes/compras/estado'
@@ -42,6 +43,11 @@ const LoginRoute = LoginRouteImport.update({
 const PaquetesRoute = PaquetesRouteImport.update({
   id: '/paquetes',
   path: '/paquetes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacidadRoute = PrivacidadRouteImport.update({
+  id: '/privacidad',
+  path: '/privacidad',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegistroRoute = RegistroRouteImport.update({
@@ -111,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/paquetes': typeof PaquetesRoute
+  '/privacidad': typeof PrivacidadRoute
   '/registro': typeof RegistroRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/compras/estado': typeof ComprasEstadoRoute
@@ -127,6 +134,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/paquetes': typeof PaquetesRoute
+  '/privacidad': typeof PrivacidadRoute
   '/registro': typeof RegistroRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/compras/estado': typeof ComprasEstadoRoute
@@ -145,6 +153,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/paquetes': typeof PaquetesRoute
+  '/privacidad': typeof PrivacidadRoute
   '/registro': typeof RegistroRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/compras/estado': typeof ComprasEstadoRoute
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/paquetes'
+    | '/privacidad'
     | '/registro'
     | '/dashboard'
     | '/compras/estado'
@@ -179,6 +189,7 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/paquetes'
+    | '/privacidad'
     | '/registro'
     | '/dashboard'
     | '/compras/estado'
@@ -196,6 +207,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/login'
     | '/paquetes'
+    | '/privacidad'
     | '/registro'
     | '/_authenticated/dashboard'
     | '/compras/estado'
@@ -214,6 +226,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   LoginRoute: typeof LoginRoute
   PaquetesRoute: typeof PaquetesRoute
+  PrivacidadRoute: typeof PrivacidadRoute
   RegistroRoute: typeof RegistroRoute
   ComprasEstadoRoute: typeof ComprasEstadoRoute
   ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
@@ -247,6 +260,13 @@ declare module '@tanstack/react-router' {
       path: '/paquetes'
       fullPath: '/paquetes'
       preLoaderRoute: typeof PaquetesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacidad': {
+      id: '/privacidad'
+      path: '/privacidad'
+      fullPath: '/privacidad'
+      preLoaderRoute: typeof PrivacidadRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/registro': {
@@ -360,6 +380,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   LoginRoute: LoginRoute,
   PaquetesRoute: PaquetesRoute,
+  PrivacidadRoute: PrivacidadRoute,
   RegistroRoute: RegistroRoute,
   ComprasEstadoRoute: ComprasEstadoRoute,
   ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
