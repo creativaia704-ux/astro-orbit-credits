@@ -36,7 +36,7 @@ export const createStudy = createServerFn({ method: "POST" })
     const astro = await import("@/lib/astro.server");
 
     let title: string;
-    let result: unknown;
+    let result: Record<string, unknown>;
 
     if (data.study_type_code === "carta_natal") {
       title = `Carta astral de ${data.person1.name}`;
@@ -73,7 +73,7 @@ export const createStudy = createServerFn({ method: "POST" })
 
     return {
       study_id: payload.study_id,
-      result_data: result,
+      result_data: result as Record<string, unknown>,
       new_credits_balance: payload.new_credits_balance,
       credits_spent: payload.credits_spent,
     };

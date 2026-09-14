@@ -47,7 +47,7 @@ export type Positions = Record<(typeof PLANETS)[number], Position>;
 export type PersonInput = {
   name: string;
   birth_date: string;
-  birth_time?: string | null;
+  birth_time?: string | null | undefined;
   birth_place: string;
 };
 
