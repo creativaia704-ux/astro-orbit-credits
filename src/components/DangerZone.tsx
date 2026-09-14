@@ -52,7 +52,7 @@ export function DangerZone() {
           role="dialog"
           aria-modal="true"
           aria-label="Confirmar eliminación de cuenta"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6"
+          className="safe-y fade-in-up fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/70 p-4 sm:p-6"
         >
           <div className="w-full max-w-md rounded-[20px] border border-border bg-surface-elevated p-6">
             <h3 className="text-lg font-semibold">Eliminar mi cuenta</h3>

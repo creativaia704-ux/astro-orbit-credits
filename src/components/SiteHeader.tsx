@@ -17,7 +17,7 @@ export function SiteHeader() {
 
   return (
     <header className="safe-top mx-auto grid max-w-5xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-5 sm:flex sm:flex-wrap sm:justify-between sm:px-6 sm:py-6">
-      <Link to="/" className="font-heading text-lg font-bold tracking-tight">
+      <Link to="/" className="font-heading min-w-0 truncate text-lg font-bold tracking-tight">
         Astro<span className="text-gradient">Créditos</span>
       </Link>
 
