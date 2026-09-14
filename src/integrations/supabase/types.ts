@@ -14,7 +14,230 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      credit_packages: {
+        Row: {
+          active: boolean
+          credits: number
+          id: string
+          name: string
+          price_usd: number
+          sort_order: number
+          stripe_payment_link: string | null
+        }
+        Insert: {
+          active?: boolean
+          credits: number
+          id?: string
+          name: string
+          price_usd: number
+          sort_order?: number
+          stripe_payment_link?: string | null
+        }
+        Update: {
+          active?: boolean
+          credits?: number
+          id?: string
+          name?: string
+          price_usd?: number
+          sort_order?: number
+          stripe_payment_link?: string | null
+        }
+        Relationships: []
+      }
+      credit_transactions: {
+        Row: {
+          amount: number
+          created_at: string
+          description: string | null
+          id: string
+          reference_id: string | null
+          type: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          type: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          reference_id?: string | null
+          type?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credit_transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          birth_date: string | null
+          birth_place: string | null
+          birth_time: string | null
+          created_at: string
+          credits_balance: number
+          email: string
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          birth_date?: string | null
+          birth_place?: string | null
+          birth_time?: string | null
+          created_at?: string
+          credits_balance?: number
+          email: string
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          birth_date?: string | null
+          birth_place?: string | null
+          birth_time?: string | null
+          created_at?: string
+          credits_balance?: number
+          email?: string
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      purchases: {
+        Row: {
+          amount_usd: number
+          created_at: string
+          credits_purchased: number
+          id: string
+          package_id: string | null
+          status: string
+          stripe_session_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          amount_usd: number
+          created_at?: string
+          credits_purchased: number
+          id?: string
+          package_id?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          amount_usd?: number
+          created_at?: string
+          credits_purchased?: number
+          id?: string
+          package_id?: string | null
+          status?: string
+          stripe_session_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "purchases_package_id_fkey"
+            columns: ["package_id"]
+            isOneToOne: false
+            referencedRelation: "credit_packages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "purchases_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      studies: {
+        Row: {
+          created_at: string
+          credits_spent: number
+          id: string
+          input_data: Json
+          result_data: Json | null
+          status: string
+          study_type_id: string | null
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          credits_spent: number
+          id?: string
+          input_data: Json
+          result_data?: Json | null
+          status?: string
+          study_type_id?: string | null
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          credits_spent?: number
+          id?: string
+          input_data?: Json
+          result_data?: Json | null
+          status?: string
+          study_type_id?: string | null
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studies_study_type_id_fkey"
+            columns: ["study_type_id"]
+            isOneToOne: false
+            referencedRelation: "study_types"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "studies_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      study_types: {
+        Row: {
+          code: string
+          credit_cost: number
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          code: string
+          credit_cost?: number
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          code?: string
+          credit_cost?: number
+          description?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
