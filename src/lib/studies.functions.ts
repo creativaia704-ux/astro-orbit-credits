@@ -73,7 +73,6 @@ export const createStudy = createServerFn({ method: "POST" })
 
     return {
       study_id: payload.study_id,
-      result_data: result as Record<string, unknown>,
       new_credits_balance: payload.new_credits_balance,
       credits_spent: payload.credits_spent,
     };
