@@ -135,7 +135,10 @@ function Index() {
       </main>
 
       <footer className="mt-12 border-t border-border py-8 text-center text-sm text-muted-foreground">
-        AstroCréditos © 2024 · España
+        AstroCréditos © 2024 · España ·{" "}
+        <Link to="/privacidad" className="underline hover:text-primary">
+          Privacidad
+        </Link>
       </footer>
     </div>
   );
