@@ -50,7 +50,7 @@ function HistorialEstudiosPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="mx-auto max-w-5xl px-6 py-12">
+      <main className="fade-in-up safe-bottom mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
         <h1 className="text-3xl font-semibold sm:text-4xl">Estudios realizados</h1>
 
         <div className="mt-6">
@@ -88,18 +88,30 @@ function HistorialEstudiosPage() {
               {data.items.map((s) => (
                 <li
                   key={s.id}
-                  className="surface-card grid gap-2 p-5 sm:grid-cols-[1.2fr_0.9fr_1.4fr_0.5fr_auto_auto] sm:items-center"
+                  className="surface-card grid grid-cols-1 gap-0 p-5 sm:grid-cols-[1.2fr_0.9fr_1.4fr_0.5fr_auto_auto] sm:items-center sm:gap-2"
                 >
-                  <span className="text-sm text-muted-foreground">{formatFecha(s.created_at)}</span>
-                  <span className="text-sm">{s.type_name}</span>
-                  <span className="font-medium">{s.title}</span>
-                  <span className="text-sm text-primary">-{s.credits_spent}</span>
-                  <StatusBadge status={s.status} />
+                  <Cell label="Fecha">
+                    <span className="text-sm text-muted-foreground">
+                      {formatFecha(s.created_at)}
+                    </span>
+                  </Cell>
+                  <Cell label="Tipo">
+                    <span className="text-sm">{s.type_name}</span>
+                  </Cell>
+                  <Cell label="Título">
+                    <span className="font-medium">{s.title}</span>
+                  </Cell>
+                  <Cell label="Créditos">
+                    <span className="text-sm text-primary">-{s.credits_spent}</span>
+                  </Cell>
+                  <Cell label="Estado">
+                    <StatusBadge status={s.status} />
+                  </Cell>
                   {s.status === "completed" ? (
                     <Link
                       to="/estudios/resultado/$id"
                       params={{ id: s.id }}
-                      className="rounded-[12px] border border-border px-4 py-2 text-center text-sm transition-colors hover:bg-surface"
+                      className="mt-3 block w-full rounded-[12px] border border-border px-4 py-2 text-center text-sm transition-colors hover:bg-surface sm:mt-0 sm:w-auto"
                     >
                       Ver resultado
                     </Link>
@@ -107,7 +119,7 @@ function HistorialEstudiosPage() {
                     <button
                       type="button"
                       disabled
-                      className="cursor-not-allowed rounded-[12px] border border-border px-4 py-2 text-sm opacity-40"
+                      className="mt-3 w-full cursor-not-allowed rounded-[12px] border border-border px-4 py-2 text-sm opacity-40 sm:mt-0 sm:w-auto"
                     >
                       No disponible
                     </button>
