@@ -83,7 +83,8 @@ function RevolucionSolarPage() {
   const yearValid =
     Number.isInteger(yearNumber) && yearNumber >= minYear && yearNumber <= maxYear;
 
-  const canSubmit = isPersonValid(person, today) && yearValid && (balance ?? 0) >= 5 && !busy;
+  const canSubmit =
+    isPersonValid(person, today) && yearValid && (balance ?? 0) >= 5 && !busy && online;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
