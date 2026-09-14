@@ -10,6 +10,11 @@ import {
   isPersonValid,
   type PersonValues,
 } from "@/components/estudios/StudyFormFields";
+import { OfflineBanner } from "@/components/OfflineBanner";
+import { useOnlineStatus } from "@/hooks/useOnlineStatus";
+import { useStudyDraft } from "@/hooks/useStudyDraft";
+
+type RevolucionDraft = { person: PersonValues; year: string };
 
 export const Route = createFileRoute("/_authenticated/estudios/revolucion-solar")({
   head: () => ({
@@ -41,7 +46,18 @@ function RevolucionSolarPage() {
   const [error, setError] = useState<string | null>(null);
   const today = useMemo(() => new Date().toISOString().slice(0, 10), []);
 
+  const online = useOnlineStatus();
+  const { draft, hydrated, saveDraft, clearDraft } =
+    useStudyDraft<RevolucionDraft>("revolucion_solar");
+
+  // El borrador guardado tiene prioridad sobre los datos del perfil.
   useEffect(() => {
+    if (!hydrated) return;
+    if (draft) {
+      setPerson(draft.person);
+      setYear(draft.year);
+      return;
+    }
     if (!profile) return;
     setPerson({
       name: profile.full_name ?? "",
@@ -49,7 +65,17 @@ function RevolucionSolarPage() {
       birth_time: profile.birth_time ?? "",
       birth_place: profile.birth_place ?? "",
     });
-  }, [profile]);
+  }, [profile, draft, hydrated]);
+
+  function updatePerson(next: PersonValues) {
+    setPerson(next);
+    saveDraft({ person: next, year });
+  }
+
+  function updateYear(next: string) {
+    setYear(next);
+    saveDraft({ person, year: next });
+  }
 
   const minYear = person.birth_date ? Number(person.birth_date.slice(0, 4)) + 1 : 1900;
   const maxYear = currentYear + 1;
