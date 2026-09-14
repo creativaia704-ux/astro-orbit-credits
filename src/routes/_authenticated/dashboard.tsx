@@ -171,16 +171,16 @@ function DashboardPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="mx-auto max-w-4xl px-6 py-12">
+      <main className="safe-bottom mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-12">
         {loading ? (
           <DashboardSkeleton />
         ) : !profile ? (
           <p className="text-destructive">No se pudo cargar tu perfil. Recarga la página.</p>
         ) : (
-          <>
+          <div className="fade-in-up">
             {/* Cabecera de bienvenida */}
             <header className="mb-10">
-              <h1 className="text-4xl font-semibold">
+              <h1 className="text-3xl font-semibold sm:text-4xl">
                 Hola, {profile.full_name?.trim() || profile.email}
               </h1>
               <p className="mt-2 text-muted-foreground">
