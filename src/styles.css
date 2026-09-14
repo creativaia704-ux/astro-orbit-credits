@@ -123,8 +123,13 @@
 
 @utility surface-card-hover {
   &:hover {
-    transform: scale(1.02);
     border-color: color-mix(in oklch, var(--color-primary) 45%, transparent);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    &:hover {
+      transform: scale(1.02);
+    }
   }
 }
 
@@ -148,8 +153,18 @@
     box-shadow 200ms var(--ease-standard);
 
   &:hover {
-    transform: translateY(-1px);
     box-shadow: 0 0 32px rgba(0, 229, 255, 0.45);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    &:hover {
+      transform: translateY(-1px);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+      transition-duration: 100ms;
+    }
   }
 }
 
@@ -161,4 +176,103 @@
   );
   background-clip: text;
   color: transparent;
+}
+
+/* ---------- Fase 8: animaciones dark-tech ---------- */
+
+@keyframes ac-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ac-slide-in-top {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ac-glow-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 24px
+      color-mix(in oklch, var(--color-primary) 30%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 34px
+      color-mix(in oklch, var(--color-primary) 60%, transparent);
+  }
+}
+
+/* Entrada de página/sección: fade + desplazamiento leve.
+   Degrada sola a un fade sin movimiento si no hay JS y el sistema
+   pide reducir movimiento. */
+@utility fade-in-up {
+  opacity: 1;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ac-fade-in-up 200ms var(--ease-standard) both;
+  }
+}
+
+/* Banners de error/éxito y toasts: slide desde arriba + fade. */
+@utility banner-slide-in {
+  opacity: 1;
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ac-slide-in-top 200ms var(--ease-standard) both;
+  }
+}
+
+/* Glow pulsante sutil de la tarjeta de saldo. */
+@utility glow-pulse {
+  box-shadow: 0 0 24px color-mix(in oklch, var(--color-primary) 30%, transparent);
+
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ac-glow-pulse 2.5s var(--ease-standard) infinite;
+  }
+}
+
+/* ---------- Fase 8: safe areas (viewport-fit=cover) ---------- */
+
+@utility safe-top {
+  padding-top: max(env(safe-area-inset-top), 0px);
+}
+
+@utility safe-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+}
+
+@utility safe-y {
+  padding-top: max(env(safe-area-inset-top), 0px);
+  padding-bottom: max(env(safe-area-inset-bottom), 0px);
+}
+
+/* ---------- Fase 8: red de seguridad global de reduced-motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .surface-card-hover:hover,
+  .btn-primary:hover,
+  .btn-primary:active {
+    transform: none !important;
+  }
 }
