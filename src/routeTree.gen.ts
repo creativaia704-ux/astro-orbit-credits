@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as PaquetesRouteImport } from './routes/paquetes'
 import { Route as RegistroRouteImport } from './routes/registro'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 
@@ -29,6 +30,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PaquetesRoute = PaquetesRouteImport.update({
+  id: '/paquetes',
+  path: '/paquetes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegistroRoute = RegistroRouteImport.update({
   id: '/registro',
   path: '/registro',
@@ -43,12 +49,14 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/paquetes': typeof PaquetesRoute
   '/registro': typeof RegistroRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/paquetes': typeof PaquetesRoute
   '/registro': typeof RegistroRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
 }
@@ -57,19 +65,21 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/login': typeof LoginRoute
+  '/paquetes': typeof PaquetesRoute
   '/registro': typeof RegistroRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/registro' | '/dashboard'
+  fullPaths: '/' | '/login' | '/paquetes' | '/registro' | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/registro' | '/dashboard'
+  to: '/' | '/login' | '/paquetes' | '/registro' | '/dashboard'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/login'
+    | '/paquetes'
     | '/registro'
     | '/_authenticated/dashboard'
   fileRoutesById: FileRoutesById
@@ -78,6 +88,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   LoginRoute: typeof LoginRoute
+  PaquetesRoute: typeof PaquetesRoute
   RegistroRoute: typeof RegistroRoute
 }
 
@@ -102,6 +113,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/paquetes': {
+      id: '/paquetes'
+      path: '/paquetes'
+      fullPath: '/paquetes'
+      preLoaderRoute: typeof PaquetesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/registro': {
@@ -136,6 +154,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   LoginRoute: LoginRoute,
+  PaquetesRoute: PaquetesRoute,
   RegistroRoute: RegistroRoute,
 }
 export const routeTree = rootRouteImport
