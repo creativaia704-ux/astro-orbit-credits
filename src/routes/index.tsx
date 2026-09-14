@@ -54,12 +54,8 @@ const packages = [
 function Index() {
   return (
     <div className="min-h-screen bg-background">
-      <header className="mx-auto flex max-w-5xl items-center justify-between px-6 py-6">
-        <span className="font-heading text-lg font-bold tracking-tight">
-          Astro<span className="text-gradient">Créditos</span>
-        </span>
-        <span className="text-xs text-muted-foreground">Cada estudio, 5 créditos</span>
-      </header>
+      <SiteHeader />
+
 
       <main>
         {/* Hero */}
