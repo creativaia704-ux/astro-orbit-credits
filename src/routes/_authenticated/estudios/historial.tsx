@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { SiteHeader } from "@/components/SiteHeader";
 import { listStudies } from "@/lib/history.functions";
 import {
+  Cell,
   Pagination,
   RowsSkeleton,
   StatusBadge,

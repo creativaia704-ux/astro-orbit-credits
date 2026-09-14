@@ -5,6 +5,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { SiteHeader } from "@/components/SiteHeader";
 import { listPurchases } from "@/lib/history.functions";
 import {
+  Cell,
   Pagination,
   RowsSkeleton,
   StatusBadge,
@@ -49,7 +50,7 @@ function ComprasPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="mx-auto max-w-5xl px-6 py-12">
+      <main className="fade-in-up safe-bottom mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
         <h1 className="text-3xl font-semibold sm:text-4xl">Compras realizadas</h1>
 
         <div className="mt-6">
@@ -88,13 +89,25 @@ function ComprasPage() {
               {data.items.map((p) => (
                 <li
                   key={p.id}
-                  className="surface-card grid gap-2 p-5 sm:grid-cols-[1.4fr_1fr_0.7fr_0.6fr_auto] sm:items-center"
+                  className="surface-card grid grid-cols-1 gap-0 p-5 sm:grid-cols-[1.4fr_1fr_0.7fr_0.6fr_auto] sm:items-center sm:gap-2"
                 >
-                  <span className="text-sm text-muted-foreground">{formatFecha(p.created_at)}</span>
-                  <span className="font-medium">{p.package_name}</span>
-                  <span className="text-sm">{p.amount_usd} US$</span>
-                  <span className="text-sm text-primary">+{p.credits_purchased}</span>
-                  <StatusBadge status={p.status} />
+                  <Cell label="Fecha">
+                    <span className="text-sm text-muted-foreground">
+                      {formatFecha(p.created_at)}
+                    </span>
+                  </Cell>
+                  <Cell label="Paquete">
+                    <span className="font-medium">{p.package_name}</span>
+                  </Cell>
+                  <Cell label="Importe">
+                    <span className="text-sm">{p.amount_usd} US$</span>
+                  </Cell>
+                  <Cell label="Créditos">
+                    <span className="text-sm text-primary">+{p.credits_purchased}</span>
+                  </Cell>
+                  <Cell label="Estado">
+                    <StatusBadge status={p.status} />
+                  </Cell>
                 </li>
               ))}
             </ul>
