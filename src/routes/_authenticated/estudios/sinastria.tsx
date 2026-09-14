@@ -107,6 +107,7 @@ function SinastriaPage() {
           },
         },
       });
+      clearDraft();
       navigate({ to: "/estudios/resultado/$id", params: { id: res.study_id } });
     } catch (err) {
       setBalance(previous ?? null);
@@ -121,34 +122,35 @@ function SinastriaPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      {!online && <OfflineBanner />}
       <SiteHeader />
-      <main className="mx-auto max-w-3xl px-6 py-12">
+      <main className="fade-in-up safe-bottom mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-12">
         <h1 className="text-3xl font-semibold">Sinastría</h1>
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
-          <section className="rounded-[20px] border border-border bg-surface-elevated p-8">
+          <section className="rounded-[20px] border border-border bg-surface-elevated p-6 sm:p-8">
             <h2 className="mb-5 text-xl font-semibold">Persona 1</h2>
-            <PersonFields idPrefix="p1" values={p1} onChange={setP1} today={today} />
+            <PersonFields idPrefix="p1" values={p1} onChange={updateP1} today={today} />
           </section>
-          <section className="rounded-[20px] border border-border bg-surface-elevated p-8">
+          <section className="rounded-[20px] border border-border bg-surface-elevated p-6 sm:p-8">
             <h2 className="mb-5 text-xl font-semibold">Persona 2</h2>
             <PersonFields
               idPrefix="p2"
               values={p2}
-              onChange={setP2}
+              onChange={updateP2}
               today={today}
               namePlaceholder="Nombre de la otra persona"
             />
           </section>
 
           {error && (
-            <p role="alert" className="text-sm text-destructive">
+            <p role="alert" className="banner-slide-in text-sm text-destructive">
               {error}
             </p>
           )}
           <button
             type="submit"
             disabled={!canSubmit}
-            className="btn-primary disabled:cursor-not-allowed disabled:opacity-50"
+            className="btn-primary w-full disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
           >
             {busy ? "Calculando tu estudio…" : "Generar estudio (5 créditos)"}
           </button>
