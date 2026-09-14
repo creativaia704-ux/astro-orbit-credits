@@ -75,4 +75,27 @@ export function Pagination({
 }
 
 export const selectClass =
-  "rounded-[12px] border border-border bg-surface px-4 py-2.5 text-foreground focus:border-primary focus:outline-none";
+  "w-full rounded-[12px] border border-border bg-surface px-4 py-2.5 text-foreground focus:border-primary focus:outline-none sm:w-auto";
+
+/**
+ * Celda de una fila de historial. En móvil se muestra como par
+ * etiqueta-valor apilado; a partir de 640px vuelve a ser una columna.
+ */
+export function Cell({
+  label,
+  className,
+  children,
+}: {
+  label: string;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className={`flex items-baseline justify-between gap-3 border-b border-border/60 py-2 last:border-b-0 sm:block sm:border-b-0 sm:py-0 ${className ?? ""}`}
+    >
+      <span className="shrink-0 text-xs text-muted-foreground sm:hidden">{label}</span>
+      <span className="min-w-0 text-right sm:text-left">{children}</span>
+    </div>
+  );
+}

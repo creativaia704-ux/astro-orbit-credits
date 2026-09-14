@@ -61,7 +61,7 @@ function Index() {
 
       <main>
         {/* Hero */}
-        <section className="relative overflow-hidden px-6 py-16 sm:py-24">
+        <section className="fade-in-up relative overflow-hidden px-6 py-16 sm:py-24">
           <div
             aria-hidden
             className="pointer-events-none absolute left-1/2 top-0 h-[420px] w-[720px] -translate-x-1/2 rounded-full opacity-25 blur-3xl"
@@ -79,7 +79,7 @@ function Index() {
               Genera tu carta astral, tu sinastría o tu revolución solar en minutos
             </p>
             <div className="mt-8">
-              <Link to="/registro" className="btn-primary">
+              <Link to="/registro" className="btn-primary w-full sm:w-auto">
                 Crear cuenta gratis
               </Link>
             </div>
@@ -88,7 +88,7 @@ function Index() {
         </section>
 
         {/* Estudios */}
-        <section className="mx-auto max-w-5xl px-6 py-12">
+        <section className="fade-in-up mx-auto max-w-5xl px-6 py-12">
           <h2 className="text-2xl font-semibold sm:text-4xl">¿Qué quieres crear hoy?</h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
             {studies.map((study) => (
@@ -107,7 +107,7 @@ function Index() {
         </section>
 
         {/* Paquetes */}
-        <section className="mx-auto max-w-5xl px-6 py-12">
+        <section className="fade-in-up mx-auto max-w-5xl px-6 py-12">
           <h2 className="text-2xl font-semibold sm:text-4xl">Paquetes de créditos</h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
             {packages.map((pack) => (
@@ -134,7 +134,7 @@ function Index() {
         </section>
       </main>
 
-      <footer className="mt-12 border-t border-border py-8 text-center text-sm text-muted-foreground">
+      <footer className="safe-bottom mt-12 border-t border-border py-8 text-center text-sm text-muted-foreground">
         AstroCréditos © 2024 · España ·{" "}
         <Link to="/privacidad" className="underline hover:text-primary">
           Privacidad

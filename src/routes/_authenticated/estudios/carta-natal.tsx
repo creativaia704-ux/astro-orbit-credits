@@ -10,6 +10,9 @@ import {
   isPersonValid,
   type PersonValues,
 } from "@/components/estudios/StudyFormFields";
+import { OfflineBanner } from "@/components/OfflineBanner";
+import { useOnlineStatus } from "@/hooks/useOnlineStatus";
+import { useStudyDraft } from "@/hooks/useStudyDraft";
 
 export const Route = createFileRoute("/_authenticated/estudios/carta-natal")({
   head: () => ({
@@ -30,13 +33,21 @@ function CartaNatalPage() {
   const navigate = useNavigate();
   const submit = useServerFn(createStudy);
   const { profile, balance, setBalance } = useProfileCredits(user.id);
+  const online = useOnlineStatus();
+  const { draft, hydrated, saveDraft, clearDraft } = useStudyDraft<PersonValues>("carta_natal");
 
   const [person, setPerson] = useState<PersonValues>(emptyPerson);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const today = useMemo(() => new Date().toISOString().slice(0, 10), []);
 
+  // El borrador guardado tiene prioridad sobre los datos del perfil.
   useEffect(() => {
+    if (!hydrated) return;
+    if (draft) {
+      setPerson(draft);
+      return;
+    }
     if (!profile) return;
     setPerson({
       name: profile.full_name ?? "",
@@ -44,9 +55,14 @@ function CartaNatalPage() {
       birth_time: profile.birth_time ?? "",
       birth_place: profile.birth_place ?? "",
     });
-  }, [profile]);
+  }, [profile, draft, hydrated]);
 
-  const canSubmit = isPersonValid(person, today) && (balance ?? 0) >= 5 && !busy;
+  function updatePerson(next: PersonValues) {
+    setPerson(next);
+    saveDraft(next);
+  }
+
+  const canSubmit = isPersonValid(person, today) && (balance ?? 0) >= 5 && !busy && online;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -68,6 +84,7 @@ function CartaNatalPage() {
           },
         },
       });
+      clearDraft();
       navigate({ to: "/estudios/resultado/$id", params: { id: res.study_id } });
     } catch (err) {
       setBalance(previous ?? null);
@@ -82,23 +99,24 @@ function CartaNatalPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      {!online && <OfflineBanner />}
       <SiteHeader />
-      <main className="mx-auto max-w-3xl px-6 py-12">
+      <main className="fade-in-up safe-bottom mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-12">
         <h1 className="text-3xl font-semibold">Carta astral</h1>
         <form
           onSubmit={handleSubmit}
-          className="mt-8 rounded-[20px] border border-border bg-surface-elevated p-8"
+          className="mt-8 rounded-[20px] border border-border bg-surface-elevated p-6 sm:p-8"
         >
-          <PersonFields idPrefix="p1" values={person} onChange={setPerson} today={today} />
+          <PersonFields idPrefix="p1" values={person} onChange={updatePerson} today={today} />
           {error && (
-            <p role="alert" className="mt-5 text-sm text-destructive">
+            <p role="alert" className="banner-slide-in mt-5 text-sm text-destructive">
               {error}
             </p>
           )}
           <button
             type="submit"
             disabled={!canSubmit}
-            className="btn-primary mt-6 disabled:cursor-not-allowed disabled:opacity-50"
+            className="btn-primary mt-6 w-full disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
           >
             {busy ? "Calculando tu estudio…" : "Generar estudio (5 créditos)"}
           </button>

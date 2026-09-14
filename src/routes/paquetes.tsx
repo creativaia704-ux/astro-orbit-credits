@@ -63,22 +63,30 @@ function PaquetesPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="mx-auto max-w-5xl px-6 py-16">
+      <main className="fade-in-up safe-bottom mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
         <h1 className="font-heading text-3xl font-bold sm:text-4xl">
           Elige tu paquete de créditos
         </h1>
         <p className="mt-3 text-muted-foreground">Cada estudio cuesta 5 créditos</p>
 
         {error && (
-          <p className="mt-6 text-sm" style={{ color: "var(--color-error)" }} role="alert">
+          <p
+            className="banner-slide-in mt-6 text-sm text-destructive"
+            role="alert"
+          >
             {error}
           </p>
         )}
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3">
           {isPending
             ? [0, 1, 2].map((i) => (
-                <div key={i} className="surface-card h-56 animate-pulse bg-surface" />
+                <div key={i} className="surface-card animate-pulse p-6">
+                  <div className="mx-auto h-5 w-24 rounded-[8px] bg-surface-elevated" />
+                  <div className="mx-auto mt-5 h-10 w-32 rounded-[12px] bg-surface-elevated" />
+                  <div className="mx-auto mt-4 h-4 w-28 rounded-[8px] bg-surface-elevated" />
+                  <div className="mt-6 h-11 w-full rounded-full bg-surface-elevated" />
+                </div>
               ))
             : (packages ?? []).map((pack) => (
                 <article key={pack.id} className="surface-card surface-card-hover p-6 text-center">

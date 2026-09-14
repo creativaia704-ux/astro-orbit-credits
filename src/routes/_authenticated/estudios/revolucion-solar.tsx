@@ -10,6 +10,11 @@ import {
   isPersonValid,
   type PersonValues,
 } from "@/components/estudios/StudyFormFields";
+import { OfflineBanner } from "@/components/OfflineBanner";
+import { useOnlineStatus } from "@/hooks/useOnlineStatus";
+import { useStudyDraft } from "@/hooks/useStudyDraft";
+
+type RevolucionDraft = { person: PersonValues; year: string };
 
 export const Route = createFileRoute("/_authenticated/estudios/revolucion-solar")({
   head: () => ({
@@ -41,7 +46,18 @@ function RevolucionSolarPage() {
   const [error, setError] = useState<string | null>(null);
   const today = useMemo(() => new Date().toISOString().slice(0, 10), []);
 
+  const online = useOnlineStatus();
+  const { draft, hydrated, saveDraft, clearDraft } =
+    useStudyDraft<RevolucionDraft>("revolucion_solar");
+
+  // El borrador guardado tiene prioridad sobre los datos del perfil.
   useEffect(() => {
+    if (!hydrated) return;
+    if (draft) {
+      setPerson(draft.person);
+      setYear(draft.year);
+      return;
+    }
     if (!profile) return;
     setPerson({
       name: profile.full_name ?? "",
@@ -49,7 +65,17 @@ function RevolucionSolarPage() {
       birth_time: profile.birth_time ?? "",
       birth_place: profile.birth_place ?? "",
     });
-  }, [profile]);
+  }, [profile, draft, hydrated]);
+
+  function updatePerson(next: PersonValues) {
+    setPerson(next);
+    saveDraft({ person: next, year });
+  }
+
+  function updateYear(next: string) {
+    setYear(next);
+    saveDraft({ person, year: next });
+  }
 
   const minYear = person.birth_date ? Number(person.birth_date.slice(0, 4)) + 1 : 1900;
   const maxYear = currentYear + 1;
@@ -57,7 +83,8 @@ function RevolucionSolarPage() {
   const yearValid =
     Number.isInteger(yearNumber) && yearNumber >= minYear && yearNumber <= maxYear;
 
-  const canSubmit = isPersonValid(person, today) && yearValid && (balance ?? 0) >= 5 && !busy;
+  const canSubmit =
+    isPersonValid(person, today) && yearValid && (balance ?? 0) >= 5 && !busy && online;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -80,6 +107,7 @@ function RevolucionSolarPage() {
           year: yearNumber,
         },
       });
+      clearDraft();
       navigate({ to: "/estudios/resultado/$id", params: { id: res.study_id } });
     } catch (err) {
       setBalance(previous ?? null);
@@ -94,14 +122,15 @@ function RevolucionSolarPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      {!online && <OfflineBanner />}
       <SiteHeader />
-      <main className="mx-auto max-w-3xl px-6 py-12">
+      <main className="fade-in-up safe-bottom mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-12">
         <h1 className="text-3xl font-semibold">Revolución solar</h1>
         <form
           onSubmit={handleSubmit}
-          className="mt-8 rounded-[20px] border border-border bg-surface-elevated p-8"
+          className="mt-8 rounded-[20px] border border-border bg-surface-elevated p-6 sm:p-8"
         >
-          <PersonFields idPrefix="p1" values={person} onChange={setPerson} today={today} />
+          <PersonFields idPrefix="p1" values={person} onChange={updatePerson} today={today} />
 
           <div className="mt-5">
             <label htmlFor="year" className="mb-1.5 block text-sm text-muted-foreground">
@@ -115,20 +144,20 @@ function RevolucionSolarPage() {
               max={maxYear}
               placeholder="2025"
               value={year}
-              onChange={(e) => setYear(e.target.value)}
+              onChange={(e) => updateYear(e.target.value)}
               className="w-full rounded-[12px] border border-border bg-surface px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
             />
           </div>
 
           {error && (
-            <p role="alert" className="mt-5 text-sm text-destructive">
+            <p role="alert" className="banner-slide-in mt-5 text-sm text-destructive">
               {error}
             </p>
           )}
           <button
             type="submit"
             disabled={!canSubmit}
-            className="btn-primary mt-6 disabled:cursor-not-allowed disabled:opacity-50"
+            className="btn-primary mt-6 w-full disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
           >
             {busy ? "Calculando tu estudio…" : "Generar estudio (5 créditos)"}
           </button>

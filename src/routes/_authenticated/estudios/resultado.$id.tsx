@@ -41,13 +41,22 @@ function ResultadoPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="mx-auto max-w-5xl px-6 py-12">
+      <main className="safe-bottom mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
         {isPending ? (
-          <div className="h-40 animate-pulse rounded-[20px] bg-surface" />
+          <div className="animate-pulse">
+            <div className="h-9 w-72 max-w-full rounded-[12px] bg-surface" />
+            <div className="mt-3 h-5 w-56 max-w-full rounded-[8px] bg-surface" />
+            <div className="mt-8 h-24 rounded-[20px] bg-surface" />
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="h-16 rounded-[12px] bg-surface" />
+              ))}
+            </div>
+          </div>
         ) : isError || !data ? (
           <p className="text-destructive">No se pudo cargar este estudio.</p>
         ) : (
-          <>
+          <div className="fade-in-up">
             <header className="mb-8">
               <h1 className="text-3xl font-semibold">{data.title}</h1>
               <p className="mt-2 text-muted-foreground">
@@ -107,11 +116,11 @@ function ResultadoPage() {
 
             <Link
               to="/estudios"
-              className="mt-8 inline-block rounded-[12px] border border-border px-5 py-2.5 text-foreground transition-colors hover:bg-surface"
+              className="mt-8 inline-block w-full rounded-[12px] border border-border px-5 py-2.5 text-center text-foreground transition-colors hover:bg-surface sm:w-auto"
             >
               Volver a mis estudios
             </Link>
-          </>
+          </div>
         )}
       </main>
     </div>

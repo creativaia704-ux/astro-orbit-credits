@@ -3,6 +3,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { SiteHeader } from "@/components/SiteHeader";
 import { DangerZone } from "@/components/DangerZone";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -62,6 +63,7 @@ function formatMemberSince(iso: string) {
 
 function DashboardPage() {
   const { user } = Route.useRouteContext();
+  const reducedMotion = useReducedMotion();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState<FormValues | null>(null);
@@ -171,16 +173,16 @@ function DashboardPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
-      <main className="mx-auto max-w-4xl px-6 py-12">
+      <main className="safe-bottom mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-12">
         {loading ? (
           <DashboardSkeleton />
         ) : !profile ? (
           <p className="text-destructive">No se pudo cargar tu perfil. Recarga la página.</p>
         ) : (
-          <>
+          <div className="fade-in-up">
             {/* Cabecera de bienvenida */}
             <header className="mb-10">
-              <h1 className="text-4xl font-semibold">
+              <h1 className="text-3xl font-semibold sm:text-4xl">
                 Hola, {profile.full_name?.trim() || profile.email}
               </h1>
               <p className="mt-2 text-muted-foreground">
@@ -190,15 +192,17 @@ function DashboardPage() {
 
             {/* Tarjeta de saldo */}
             <section
-              className="surface-card mb-10 p-8"
-              style={{ boxShadow: "0 0 24px rgba(0, 229, 255, 0.15)" }}
+              className={`surface-card mb-10 p-6 sm:p-8 ${reducedMotion ? "" : "glow-pulse"}`}
+              style={
+                reducedMotion ? { boxShadow: "0 0 24px rgba(0, 229, 255, 0.15)" } : undefined
+              }
             >
               <h2 className="text-lg text-muted-foreground">Tu saldo</h2>
-              <p className="font-heading mt-2 text-[48px] font-bold leading-none text-primary">
+              <p className="font-heading mt-2 text-[40px] font-bold leading-none text-primary sm:text-[48px]">
                 {profile.credits_balance} créditos
               </p>
               <p className="mt-2 text-muted-foreground">Cada estudio cuesta 5 créditos</p>
-              <Link to="/paquetes" className="btn-primary mt-6 inline-block">
+              <Link to="/paquetes" className="btn-primary mt-6 w-full sm:w-auto">
                 Comprar créditos
               </Link>
               <div className="mt-5 flex flex-wrap gap-4 text-sm">
@@ -215,7 +219,7 @@ function DashboardPage() {
             </section>
 
             {/* Datos personales */}
-            <section className="rounded-[20px] border border-border bg-surface-elevated p-8 shadow-[var(--shadow-card)]">
+            <section className="rounded-[20px] border border-border bg-surface-elevated p-6 shadow-[var(--shadow-card)] sm:p-8">
               <h2 className="text-2xl font-semibold">Datos personales</h2>
               <form onSubmit={handleSubmit} className="mt-6 grid gap-5 sm:grid-cols-2">
                 <div className="sm:col-span-2">
@@ -297,19 +301,26 @@ function DashboardPage() {
                 </div>
 
                 {error && (
-                  <p role="alert" className="sm:col-span-2 text-sm text-destructive">
+                  <p
+                    role="alert"
+                    className="banner-slide-in text-sm text-destructive sm:col-span-2"
+                  >
                     {error}
                   </p>
                 )}
 
-                <div className="flex gap-3 sm:col-span-2">
-                  <button type="submit" disabled={!isDirty} className="btn-primary disabled:cursor-not-allowed disabled:opacity-50">
+                <div className="flex flex-col gap-3 sm:col-span-2 sm:flex-row">
+                  <button
+                    type="submit"
+                    disabled={!isDirty}
+                    className="btn-primary w-full disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                  >
                     Guardar cambios
                   </button>
                   <button
                     type="button"
                     onClick={handleCancel}
-                    className="rounded-[12px] border border-border px-5 py-2.5 text-foreground transition-colors hover:bg-surface"
+                    className="w-full rounded-[12px] border border-border px-5 py-2.5 text-foreground transition-colors hover:bg-surface sm:w-auto"
                   >
                     Cancelar
                   </button>
@@ -318,7 +329,7 @@ function DashboardPage() {
             </section>
 
             <DangerZone />
-          </>
+          </div>
         )}
       </main>
     </div>
