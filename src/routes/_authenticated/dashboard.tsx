@@ -3,6 +3,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { SiteHeader } from "@/components/SiteHeader";
 import { DangerZone } from "@/components/DangerZone";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -299,19 +300,26 @@ function DashboardPage() {
                 </div>
 
                 {error && (
-                  <p role="alert" className="sm:col-span-2 text-sm text-destructive">
+                  <p
+                    role="alert"
+                    className="banner-slide-in text-sm text-destructive sm:col-span-2"
+                  >
                     {error}
                   </p>
                 )}
 
-                <div className="flex gap-3 sm:col-span-2">
-                  <button type="submit" disabled={!isDirty} className="btn-primary disabled:cursor-not-allowed disabled:opacity-50">
+                <div className="flex flex-col gap-3 sm:col-span-2 sm:flex-row">
+                  <button
+                    type="submit"
+                    disabled={!isDirty}
+                    className="btn-primary w-full disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                  >
                     Guardar cambios
                   </button>
                   <button
                     type="button"
                     onClick={handleCancel}
-                    className="rounded-[12px] border border-border px-5 py-2.5 text-foreground transition-colors hover:bg-surface"
+                    className="w-full rounded-[12px] border border-border px-5 py-2.5 text-foreground transition-colors hover:bg-surface sm:w-auto"
                   >
                     Cancelar
                   </button>
@@ -320,7 +328,7 @@ function DashboardPage() {
             </section>
 
             <DangerZone />
-          </>
+          </div>
         )}
       </main>
     </div>
