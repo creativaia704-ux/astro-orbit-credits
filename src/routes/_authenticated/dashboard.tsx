@@ -63,6 +63,7 @@ function formatMemberSince(iso: string) {
 
 function DashboardPage() {
   const { user } = Route.useRouteContext();
+  const reducedMotion = useReducedMotion();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState<FormValues | null>(null);
