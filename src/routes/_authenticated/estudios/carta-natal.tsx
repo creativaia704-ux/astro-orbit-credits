@@ -84,6 +84,7 @@ function CartaNatalPage() {
           },
         },
       });
+      clearDraft();
       navigate({ to: "/estudios/resultado/$id", params: { id: res.study_id } });
     } catch (err) {
       setBalance(previous ?? null);
@@ -98,23 +99,24 @@ function CartaNatalPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      {!online && <OfflineBanner />}
       <SiteHeader />
-      <main className="mx-auto max-w-3xl px-6 py-12">
+      <main className="fade-in-up safe-bottom mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-12">
         <h1 className="text-3xl font-semibold">Carta astral</h1>
         <form
           onSubmit={handleSubmit}
-          className="mt-8 rounded-[20px] border border-border bg-surface-elevated p-8"
+          className="mt-8 rounded-[20px] border border-border bg-surface-elevated p-6 sm:p-8"
         >
-          <PersonFields idPrefix="p1" values={person} onChange={setPerson} today={today} />
+          <PersonFields idPrefix="p1" values={person} onChange={updatePerson} today={today} />
           {error && (
-            <p role="alert" className="mt-5 text-sm text-destructive">
+            <p role="alert" className="banner-slide-in mt-5 text-sm text-destructive">
               {error}
             </p>
           )}
           <button
             type="submit"
             disabled={!canSubmit}
-            className="btn-primary mt-6 disabled:cursor-not-allowed disabled:opacity-50"
+            className="btn-primary mt-6 w-full disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
           >
             {busy ? "Calculando tu estudio…" : "Generar estudio (5 créditos)"}
           </button>
