@@ -116,11 +116,11 @@ function ResultadoPage() {
 
             <Link
               to="/estudios"
-              className="mt-8 inline-block rounded-[12px] border border-border px-5 py-2.5 text-foreground transition-colors hover:bg-surface"
+              className="mt-8 inline-block w-full rounded-[12px] border border-border px-5 py-2.5 text-center text-foreground transition-colors hover:bg-surface sm:w-auto"
             >
               Volver a mis estudios
             </Link>
-          </>
+          </div>
         )}
       </main>
     </div>
