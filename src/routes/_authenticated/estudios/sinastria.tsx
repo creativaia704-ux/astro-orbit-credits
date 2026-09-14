@@ -10,6 +10,11 @@ import {
   isPersonValid,
   type PersonValues,
 } from "@/components/estudios/StudyFormFields";
+import { OfflineBanner } from "@/components/OfflineBanner";
+import { useOnlineStatus } from "@/hooks/useOnlineStatus";
+import { useStudyDraft } from "@/hooks/useStudyDraft";
+
+type SinastriaDraft = { p1: PersonValues; p2: PersonValues };
 
 export const Route = createFileRoute("/_authenticated/estudios/sinastria")({
   head: () => ({
@@ -33,6 +38,8 @@ function SinastriaPage() {
   const navigate = useNavigate();
   const submit = useServerFn(createStudy);
   const { profile, balance, setBalance } = useProfileCredits(user.id);
+  const online = useOnlineStatus();
+  const { draft, hydrated, saveDraft, clearDraft } = useStudyDraft<SinastriaDraft>("sinastria");
 
   const [p1, setP1] = useState<PersonValues>(emptyPerson);
   const [p2, setP2] = useState<PersonValues>(emptyPerson);
@@ -40,7 +47,14 @@ function SinastriaPage() {
   const [error, setError] = useState<string | null>(null);
   const today = useMemo(() => new Date().toISOString().slice(0, 10), []);
 
+  // El borrador guardado tiene prioridad sobre los datos del perfil.
   useEffect(() => {
+    if (!hydrated) return;
+    if (draft) {
+      setP1(draft.p1);
+      setP2(draft.p2);
+      return;
+    }
     if (!profile) return;
     setP1({
       name: profile.full_name ?? "",
@@ -48,10 +62,24 @@ function SinastriaPage() {
       birth_time: profile.birth_time ?? "",
       birth_place: profile.birth_place ?? "",
     });
-  }, [profile]);
+  }, [profile, draft, hydrated]);
+
+  function updateP1(next: PersonValues) {
+    setP1(next);
+    saveDraft({ p1: next, p2 });
+  }
+
+  function updateP2(next: PersonValues) {
+    setP2(next);
+    saveDraft({ p1, p2: next });
+  }
 
   const canSubmit =
-    isPersonValid(p1, today) && isPersonValid(p2, today) && (balance ?? 0) >= 5 && !busy;
+    isPersonValid(p1, today) &&
+    isPersonValid(p2, today) &&
+    (balance ?? 0) >= 5 &&
+    !busy &&
+    online;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
