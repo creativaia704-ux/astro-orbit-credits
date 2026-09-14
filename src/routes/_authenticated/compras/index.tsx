@@ -80,7 +80,7 @@ function ComprasPage() {
             <div className="surface-card p-10 text-center">
               <div className="mx-auto mb-4 h-14 w-14 rounded-full border border-border bg-surface-elevated" />
               <p className="text-muted-foreground">Todavía no has hecho ninguna compra.</p>
-              <Link to="/paquetes" className="btn-primary mt-6 inline-block">
+              <Link to="/paquetes" className="btn-primary mt-6 w-full sm:w-auto">
                 Comprar créditos
               </Link>
             </div>
