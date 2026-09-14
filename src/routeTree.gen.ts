@@ -15,6 +15,8 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as PaquetesRouteImport } from './routes/paquetes'
 import { Route as RegistroRouteImport } from './routes/registro'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as ComprasEstadoRouteImport } from './routes/compras/estado'
+import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -45,6 +47,16 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ComprasEstadoRoute = ComprasEstadoRouteImport.update({
+  id: '/compras/estado',
+  path: '/compras/estado',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicStripeWebhookRoute = ApiPublicStripeWebhookRouteImport.update({
+  id: '/api/public/stripe-webhook',
+  path: '/api/public/stripe-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -52,6 +64,8 @@ export interface FileRoutesByFullPath {
   '/paquetes': typeof PaquetesRoute
   '/registro': typeof RegistroRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/compras/estado': typeof ComprasEstadoRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -59,6 +73,8 @@ export interface FileRoutesByTo {
   '/paquetes': typeof PaquetesRoute
   '/registro': typeof RegistroRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/compras/estado': typeof ComprasEstadoRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -68,12 +84,28 @@ export interface FileRoutesById {
   '/paquetes': typeof PaquetesRoute
   '/registro': typeof RegistroRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/compras/estado': typeof ComprasEstadoRoute
+  '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/paquetes' | '/registro' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/paquetes'
+    | '/registro'
+    | '/dashboard'
+    | '/compras/estado'
+    | '/api/public/stripe-webhook'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/paquetes' | '/registro' | '/dashboard'
+  to:
+    | '/'
+    | '/login'
+    | '/paquetes'
+    | '/registro'
+    | '/dashboard'
+    | '/compras/estado'
+    | '/api/public/stripe-webhook'
   id:
     | '__root__'
     | '/'
@@ -82,6 +114,8 @@ export interface FileRouteTypes {
     | '/paquetes'
     | '/registro'
     | '/_authenticated/dashboard'
+    | '/compras/estado'
+    | '/api/public/stripe-webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -90,6 +124,8 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   PaquetesRoute: typeof PaquetesRoute
   RegistroRoute: typeof RegistroRoute
+  ComprasEstadoRoute: typeof ComprasEstadoRoute
+  ApiPublicStripeWebhookRoute: typeof ApiPublicStripeWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -136,6 +172,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/compras/estado': {
+      id: '/compras/estado'
+      path: '/compras/estado'
+      fullPath: '/compras/estado'
+      preLoaderRoute: typeof ComprasEstadoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/stripe-webhook': {
+      id: '/api/public/stripe-webhook'
+      path: '/api/public/stripe-webhook'
+      fullPath: '/api/public/stripe-webhook'
+      preLoaderRoute: typeof ApiPublicStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -156,6 +206,8 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   PaquetesRoute: PaquetesRoute,
   RegistroRoute: RegistroRoute,
+  ComprasEstadoRoute: ComprasEstadoRoute,
+  ApiPublicStripeWebhookRoute: ApiPublicStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
