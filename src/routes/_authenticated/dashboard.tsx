@@ -190,15 +190,17 @@ function DashboardPage() {
 
             {/* Tarjeta de saldo */}
             <section
-              className="surface-card mb-10 p-8"
-              style={{ boxShadow: "0 0 24px rgba(0, 229, 255, 0.15)" }}
+              className={`surface-card mb-10 p-6 sm:p-8 ${reducedMotion ? "" : "glow-pulse"}`}
+              style={
+                reducedMotion ? { boxShadow: "0 0 24px rgba(0, 229, 255, 0.15)" } : undefined
+              }
             >
               <h2 className="text-lg text-muted-foreground">Tu saldo</h2>
-              <p className="font-heading mt-2 text-[48px] font-bold leading-none text-primary">
+              <p className="font-heading mt-2 text-[40px] font-bold leading-none text-primary sm:text-[48px]">
                 {profile.credits_balance} créditos
               </p>
               <p className="mt-2 text-muted-foreground">Cada estudio cuesta 5 créditos</p>
-              <Link to="/paquetes" className="btn-primary mt-6 inline-block">
+              <Link to="/paquetes" className="btn-primary mt-6 w-full sm:w-auto">
                 Comprar créditos
               </Link>
               <div className="mt-5 flex flex-wrap gap-4 text-sm">
@@ -215,7 +217,7 @@ function DashboardPage() {
             </section>
 
             {/* Datos personales */}
-            <section className="rounded-[20px] border border-border bg-surface-elevated p-8 shadow-[var(--shadow-card)]">
+            <section className="rounded-[20px] border border-border bg-surface-elevated p-6 shadow-[var(--shadow-card)] sm:p-8">
               <h2 className="text-2xl font-semibold">Datos personales</h2>
               <form onSubmit={handleSubmit} className="mt-6 grid gap-5 sm:grid-cols-2">
                 <div className="sm:col-span-2">
