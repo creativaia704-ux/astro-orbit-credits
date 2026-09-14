@@ -81,10 +81,11 @@ function Index() {
               Genera tu carta astral, tu sinastría o tu revolución solar en minutos
             </p>
             <div className="mt-8">
-              <button type="button" className="btn-primary">
+              <Link to="/registro" className="btn-primary">
                 Crear cuenta gratis
-              </button>
+              </Link>
             </div>
+
           </div>
         </section>
 
