@@ -16,8 +16,10 @@ import { Route as PaquetesRouteImport } from './routes/paquetes'
 import { Route as RegistroRouteImport } from './routes/registro'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as ComprasEstadoRouteImport } from './routes/compras/estado'
+import { Route as AuthenticatedComprasIndexRouteImport } from './routes/_authenticated/compras/index'
 import { Route as AuthenticatedEstudiosIndexRouteImport } from './routes/_authenticated/estudios/index'
 import { Route as AuthenticatedEstudiosCartaNatalRouteImport } from './routes/_authenticated/estudios/carta-natal'
+import { Route as AuthenticatedEstudiosHistorialRouteImport } from './routes/_authenticated/estudios/historial'
 import { Route as AuthenticatedEstudiosRevolucionSolarRouteImport } from './routes/_authenticated/estudios/revolucion-solar'
 import { Route as AuthenticatedEstudiosSinastriaRouteImport } from './routes/_authenticated/estudios/sinastria'
 import { Route as ApiPublicStripeWebhookRouteImport } from './routes/api/public/stripe-webhook'
@@ -57,6 +59,12 @@ const ComprasEstadoRoute = ComprasEstadoRouteImport.update({
   path: '/compras/estado',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedComprasIndexRoute =
+  AuthenticatedComprasIndexRouteImport.update({
+    id: '/compras/',
+    path: '/compras/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedEstudiosIndexRoute =
   AuthenticatedEstudiosIndexRouteImport.update({
     id: '/estudios/',
@@ -67,6 +75,12 @@ const AuthenticatedEstudiosCartaNatalRoute =
   AuthenticatedEstudiosCartaNatalRouteImport.update({
     id: '/estudios/carta-natal',
     path: '/estudios/carta-natal',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedEstudiosHistorialRoute =
+  AuthenticatedEstudiosHistorialRouteImport.update({
+    id: '/estudios/historial',
+    path: '/estudios/historial',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedEstudiosRevolucionSolarRoute =
@@ -101,9 +115,11 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/compras/estado': typeof ComprasEstadoRoute
   '/estudios/carta-natal': typeof AuthenticatedEstudiosCartaNatalRoute
+  '/estudios/historial': typeof AuthenticatedEstudiosHistorialRoute
   '/estudios/revolucion-solar': typeof AuthenticatedEstudiosRevolucionSolarRoute
   '/estudios/sinastria': typeof AuthenticatedEstudiosSinastriaRoute
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
+  '/compras/': typeof AuthenticatedComprasIndexRoute
   '/estudios/': typeof AuthenticatedEstudiosIndexRoute
   '/estudios/resultado/$id': typeof AuthenticatedEstudiosResultadoIdRoute
 }
@@ -115,9 +131,11 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/compras/estado': typeof ComprasEstadoRoute
   '/estudios/carta-natal': typeof AuthenticatedEstudiosCartaNatalRoute
+  '/estudios/historial': typeof AuthenticatedEstudiosHistorialRoute
   '/estudios/revolucion-solar': typeof AuthenticatedEstudiosRevolucionSolarRoute
   '/estudios/sinastria': typeof AuthenticatedEstudiosSinastriaRoute
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
+  '/compras': typeof AuthenticatedComprasIndexRoute
   '/estudios': typeof AuthenticatedEstudiosIndexRoute
   '/estudios/resultado/$id': typeof AuthenticatedEstudiosResultadoIdRoute
 }
@@ -131,9 +149,11 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/compras/estado': typeof ComprasEstadoRoute
   '/_authenticated/estudios/carta-natal': typeof AuthenticatedEstudiosCartaNatalRoute
+  '/_authenticated/estudios/historial': typeof AuthenticatedEstudiosHistorialRoute
   '/_authenticated/estudios/revolucion-solar': typeof AuthenticatedEstudiosRevolucionSolarRoute
   '/_authenticated/estudios/sinastria': typeof AuthenticatedEstudiosSinastriaRoute
   '/api/public/stripe-webhook': typeof ApiPublicStripeWebhookRoute
+  '/_authenticated/compras/': typeof AuthenticatedComprasIndexRoute
   '/_authenticated/estudios/': typeof AuthenticatedEstudiosIndexRoute
   '/_authenticated/estudios/resultado/$id': typeof AuthenticatedEstudiosResultadoIdRoute
 }
@@ -147,9 +167,11 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/compras/estado'
     | '/estudios/carta-natal'
+    | '/estudios/historial'
     | '/estudios/revolucion-solar'
     | '/estudios/sinastria'
     | '/api/public/stripe-webhook'
+    | '/compras/'
     | '/estudios/'
     | '/estudios/resultado/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -161,9 +183,11 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/compras/estado'
     | '/estudios/carta-natal'
+    | '/estudios/historial'
     | '/estudios/revolucion-solar'
     | '/estudios/sinastria'
     | '/api/public/stripe-webhook'
+    | '/compras'
     | '/estudios'
     | '/estudios/resultado/$id'
   id:
@@ -176,9 +200,11 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/compras/estado'
     | '/_authenticated/estudios/carta-natal'
+    | '/_authenticated/estudios/historial'
     | '/_authenticated/estudios/revolucion-solar'
     | '/_authenticated/estudios/sinastria'
     | '/api/public/stripe-webhook'
+    | '/_authenticated/compras/'
     | '/_authenticated/estudios/'
     | '/_authenticated/estudios/resultado/$id'
   fileRoutesById: FileRoutesById
@@ -244,6 +270,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ComprasEstadoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/compras/': {
+      id: '/_authenticated/compras/'
+      path: '/compras'
+      fullPath: '/compras/'
+      preLoaderRoute: typeof AuthenticatedComprasIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/estudios/': {
       id: '/_authenticated/estudios/'
       path: '/estudios'
@@ -256,6 +289,13 @@ declare module '@tanstack/react-router' {
       path: '/estudios/carta-natal'
       fullPath: '/estudios/carta-natal'
       preLoaderRoute: typeof AuthenticatedEstudiosCartaNatalRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/estudios/historial': {
+      id: '/_authenticated/estudios/historial'
+      path: '/estudios/historial'
+      fullPath: '/estudios/historial'
+      preLoaderRoute: typeof AuthenticatedEstudiosHistorialRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/estudios/revolucion-solar': {
@@ -292,8 +332,10 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedEstudiosCartaNatalRoute: typeof AuthenticatedEstudiosCartaNatalRoute
+  AuthenticatedEstudiosHistorialRoute: typeof AuthenticatedEstudiosHistorialRoute
   AuthenticatedEstudiosRevolucionSolarRoute: typeof AuthenticatedEstudiosRevolucionSolarRoute
   AuthenticatedEstudiosSinastriaRoute: typeof AuthenticatedEstudiosSinastriaRoute
+  AuthenticatedComprasIndexRoute: typeof AuthenticatedComprasIndexRoute
   AuthenticatedEstudiosIndexRoute: typeof AuthenticatedEstudiosIndexRoute
   AuthenticatedEstudiosResultadoIdRoute: typeof AuthenticatedEstudiosResultadoIdRoute
 }
@@ -301,9 +343,11 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedEstudiosCartaNatalRoute: AuthenticatedEstudiosCartaNatalRoute,
+  AuthenticatedEstudiosHistorialRoute: AuthenticatedEstudiosHistorialRoute,
   AuthenticatedEstudiosRevolucionSolarRoute:
     AuthenticatedEstudiosRevolucionSolarRoute,
   AuthenticatedEstudiosSinastriaRoute: AuthenticatedEstudiosSinastriaRoute,
+  AuthenticatedComprasIndexRoute: AuthenticatedComprasIndexRoute,
   AuthenticatedEstudiosIndexRoute: AuthenticatedEstudiosIndexRoute,
   AuthenticatedEstudiosResultadoIdRoute: AuthenticatedEstudiosResultadoIdRoute,
 }
