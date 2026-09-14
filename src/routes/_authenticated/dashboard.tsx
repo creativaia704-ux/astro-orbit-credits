@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { SiteHeader } from "@/components/SiteHeader";
+import { DangerZone } from "@/components/DangerZone";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -315,6 +316,8 @@ function DashboardPage() {
                 </div>
               </form>
             </section>
+
+            <DangerZone />
           </>
         )}
       </main>
