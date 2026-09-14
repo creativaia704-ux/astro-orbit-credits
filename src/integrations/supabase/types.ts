@@ -243,7 +243,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_study_tx: {
+        Args: {
+          _input: Json
+          _result: Json
+          _title: string
+          _type_code: string
+          _user_id: string
+        }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never
