@@ -1,5 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sparkles, HeartHandshake, Sun } from "lucide-react";
+import { SiteHeader } from "@/components/SiteHeader";
+
 
 // TODO (Fase 7): RLS aún no está activada en la base de datos; las tablas no
 // tienen políticas y solo son accesibles desde backend/desarrollo.
