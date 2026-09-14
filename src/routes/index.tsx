@@ -1,5 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sparkles, HeartHandshake, Sun } from "lucide-react";
+import { SiteHeader } from "@/components/SiteHeader";
+
 
 // TODO (Fase 7): RLS aún no está activada en la base de datos; las tablas no
 // tienen políticas y solo son accesibles desde backend/desarrollo.
@@ -54,12 +56,8 @@ const packages = [
 function Index() {
   return (
     <div className="min-h-screen bg-background">
-      <header className="mx-auto flex max-w-5xl items-center justify-between px-6 py-6">
-        <span className="font-heading text-lg font-bold tracking-tight">
-          Astro<span className="text-gradient">Créditos</span>
-        </span>
-        <span className="text-xs text-muted-foreground">Cada estudio, 5 créditos</span>
-      </header>
+      <SiteHeader />
+
 
       <main>
         {/* Hero */}
@@ -81,10 +79,11 @@ function Index() {
               Genera tu carta astral, tu sinastría o tu revolución solar en minutos
             </p>
             <div className="mt-8">
-              <button type="button" className="btn-primary">
+              <Link to="/registro" className="btn-primary">
                 Crear cuenta gratis
-              </button>
+              </Link>
             </div>
+
           </div>
         </section>
 
