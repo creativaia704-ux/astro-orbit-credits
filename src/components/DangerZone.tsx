@@ -69,11 +69,11 @@ export function DangerZone() {
               className="mt-4 w-full rounded-[12px] border border-border bg-surface px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none"
             />
             {error && (
-              <p role="alert" className="mt-3 text-sm text-destructive">
+              <p role="alert" className="banner-slide-in mt-3 text-sm text-destructive">
                 {error}
               </p>
             )}
-            <div className="mt-5 flex gap-3">
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row">
               <button
                 type="button"
                 disabled={confirm !== "ELIMINAR" || busy}
